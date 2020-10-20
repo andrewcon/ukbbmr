@@ -15,7 +15,7 @@ Description: This package was made to prepare large data
              multi-core application of functions. Finally, this allows
              a one-sample Mendelian Randomization to be performed on the
              final data. This requires additional files, such as dosage data.
-License: use_mit_license()
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
@@ -24,4 +24,5 @@ Imports:
     tidyr,
     data.table (>= 1.9.4),
     parallel,
-    pbmcapply
+    pbmcapply,
+    AER
