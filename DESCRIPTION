@@ -1,0 +1,27 @@
+Package: ukbbmr
+Title: Package for curating a UK Biobank datasets and performing One-sample MR
+Version: 0.1.0
+Authors@R: 
+    person(given = "Andrei",
+           family = "Constantinescu",
+           role = c("aut", "cre"),
+           email = "ac16225@bristol.ac.uk",
+           comment = c(ORCID = "0000-0002-7974-5245"))
+Description: This package was made to prepare large data
+             for statistical analyses. It is aimed more specifically
+             at the UK Biobank dataset. However, most of the functions
+             can be used freely in other data. data.table was used to 
+             change values by reference and pbmapply was used for 
+             multi-core application of functions. Finally, this allows
+             a one-sample Mendelian Randomization to be performed on the
+             final data. This requires additional files, such as dosage data.
+License: use_mit_license()
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Imports: 
+    tidyr,
+    data.table (>= 1.9.4),
+    parallel,
+    pbmcapply
