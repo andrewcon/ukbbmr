@@ -8,7 +8,11 @@ NULL
 #' Any rows with duplicated row names will be dropped with the first one being
 #' kepted.
 #'
-#' @param infile Path to the input file
+#' @param data Path to the input file
+#' @param datafield Path to the input file
+#' @param datafield_name Path to the input file
+#' @param keep.time Path to the input file
+#' @param keep.date Path to the input file
 #' @return A matrix of the infile
 #' @export
 extract.time <- function(data, datafield, datafield_name, keep.time = TRUE, keep.date=TRUE){
@@ -36,14 +40,14 @@ extract.time <- function(data, datafield, datafield_name, keep.time = TRUE, keep
         remove = TRUE)
 
       x.month <- paste0(datafield_name, "_", "month")
-      data.table::set(data)[, (paste0(x.month, "_", x)) := month(as.Date(data[[x.date]]))]
+      set(data)[, (paste0(x.month, "_", x)) := month(as.Date(data[[x.date]]))]
     }
     set(data, , grep(paste0(datafield_name, "_date"), colnames(data)), NULL)
     x.month.cols <- c(sprintf(paste0(datafield_name, "_", "month", "_%1d"), seq(1, nr_cols)))
     for(col in x.month.cols) {
-      data.table::set(data, j = col, value = as.numeric(data[[col]]))
+      set(data, j = col, value = as.numeric(data[[col]]))
     }
-    data[[x.month]] <- rowMeans(data[, ..x.month.cols], na.rm=TRUE)
+    data[[x.month]] <- rowMeans(data[, x.month.cols, with = F], na.rm=TRUE)
     for(y.col in x.month.cols) {print(paste0("Nr NA in ", y.col, ":", nrow(data[is.na(data[[y.col]])])))}
     data[[x.month]] <- round(data[[x.month]], digits = 0)
     set(data, , (x.month.cols), NULL)
@@ -61,7 +65,12 @@ extract.time <- function(data, datafield, datafield_name, keep.time = TRUE, keep
 #' Any rows with duplicated row names will be dropped with the first one being
 #' kepted.
 #'
-#' @param infile Path to the input file
+#' @param data Path to the input file
+#' @param datafield Path to the input file
+#' @param datafield_name Path to the input file
+#' @param my_exclusions Path to the input file
+#' @param my_cols Path to the input file
+#' @param exclude Path to the input file
 #' @return A matrix of the infile
 #' @export
 exclude.id <- function(data, datafield, datafield_name, my_exclusions, my_cols, exclude = TRUE) {
@@ -69,7 +78,7 @@ exclude.id <- function(data, datafield, datafield_name, my_exclusions, my_cols, 
   my_cols <- c(sprintf(paste0(datafield_name, "_%1d"), seq(1, nr_cols)))
   df_cols <- colnames(data)[which(startsWith(colnames(data), datafield))]
   data[, (my_cols) := lapply(.SD, function(x) ifelse(x %in% my_exclusions, 1, 0)), .SDcols = df_cols]
-  data[[datafield_name]] <- rowSums(data[, ..my_cols], na.rm=TRUE)
+  data[[datafield_name]] <- rowSums(data[, my_cols, with = F], na.rm=TRUE)
   data[[datafield_name]] <- ifelse(data[[datafield_name]] > 0, 1, 0)
   data[, (my_cols) := NULL]
   if (exclude) {
@@ -86,14 +95,17 @@ exclude.id <- function(data, datafield, datafield_name, my_exclusions, my_cols, 
 #' Any rows with duplicated row names will be dropped with the first one being
 #' kepted.
 #'
-#' @param infile Path to the input file
+#' @param data Path to the input file
+#' @param datafield Path to the input file
+#' @param datafield_name Path to the input file
+#' @param log log(value + 1)
 #' @return A matrix of the infile
 #' @export
 get.means <- function(data, datafield, datafield_name, log = FALSE) {
   nr_cols <- length(colnames(data)[which(startsWith(colnames(data), datafield))])
   my_cols <- c(sprintf(paste0(datafield_name, "_%1d"), seq(1, nr_cols)))
   colnames(data)[which(startsWith(colnames(data), datafield))] <- my_cols
-  data[[datafield_name]] <- rowSums(data[, ..my_cols], na.rm=TRUE)
+  data[[datafield_name]] <- rowSums(data[, my_cols, with =F], na.rm=TRUE)
   if(log) data[, (datafield_name) := lapply(.SD, function(x) log(x + 1)), .SDcols = datafield_name]
   set(data, , my_cols, NULL)
   return(data)
@@ -105,18 +117,22 @@ get.means <- function(data, datafield, datafield_name, log = FALSE) {
 #' contains the rownames and the subsequent columns are the sample identifiers.
 #' Any rows with duplicated row names will be dropped with the first one being
 #' kepted.
-#'
-#' @param infile Path to the input file
+#' 
+#' @param data Path to the input file
+#' @param datafield Path to the input file
+#' @param datafield_name Path to the input file
+#' @param cols.rm Path to the input file
 #' @return A matrix of the infile
 #' @export
 last.nm <- function(data, datafield, datafield_name, cols.rm = TRUE) {
+  res <- NULL
   my_cols <- grep(datafield, names(data), value= TRUE)
-  x <- data[, ..my_cols]
+  x <- data[, my_cols, with = F]
   x[, res := NA_character_]
   wh = x[, .I]
   for (v in (length(x)-1):1){
     if (!length(wh)) break
-    data.table::set(x, j="res", i=wh, v = x[[v]][wh])
+    set(x, j="res", i=wh, v = x[[v]][wh])
     wh = wh[is.na(x$res[wh])]
   }
   data[, eval(datafield_name) := x$res]
@@ -131,8 +147,13 @@ last.nm <- function(data, datafield, datafield_name, cols.rm = TRUE) {
 #' contains the rownames and the subsequent columns are the sample identifiers.
 #' Any rows with duplicated row names will be dropped with the first one being
 #' kepted.
+#' 
+#' @importFrom stats median mad
 #'
-#' @param infile Path to the input file
+#' @param data Path to the input file
+#' @param column Path to the input file
+#' @param cutoff Path to the input file
+#' @param remove Path to the input file
 #' @return A matrix of the infile
 #' @export
 mad.cutoff <- function(data, column, cutoff = 2, remove = TRUE) {
@@ -155,8 +176,13 @@ mad.cutoff <- function(data, column, cutoff = 2, remove = TRUE) {
 #' contains the rownames and the subsequent columns are the sample identifiers.
 #' Any rows with duplicated row names will be dropped with the first one being
 #' kepted.
+#' 
+#' @importFrom stats sd 
 #'
-#' @param infile Path to the input file
+#' @param data Path to the input file
+#' @param column Path to the input file
+#' @param sd_const Path to the input file
+#' @param remove Path to the input file
 #' @return A matrix of the infile
 #' @export
 sd.cutoff <- function(data, column, sd_const = 2, remove = TRUE) {
@@ -179,8 +205,13 @@ sd.cutoff <- function(data, column, sd_const = 2, remove = TRUE) {
 #' contains the rownames and the subsequent columns are the sample identifiers.
 #' Any rows with duplicated row names will be dropped with the first one being
 #' kepted.
+#' 
+#' @importFrom stats shapiro.test
 #'
-#' @param infile Path to the input file
+#' @param x Path to the input file
+#' @param t Path to the input file
+#' @param s Path to the input file
+#' @param iter Path to the input file
 #' @return A matrix of the infile
 #' @export
 shapiro.dt <- function(x, t = c(NA), s = 5000, iter = 100) {

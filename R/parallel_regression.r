@@ -7,8 +7,13 @@ NULL
 #' contains the rownames and the subsequent columns are the sample identifiers.
 #' Any rows with duplicated row names will be dropped with the first one being
 #' kepted.
+#' 
+#' @importFrom stats as.formula lm
 #'
-#' @param infile Path to the input file
+#' @param x Path to the input file
+#' @param y Path to the input file
+#' @param data Path to the input file
+#' @param covars Path to the input file
 #' @return A matrix of the infile
 #' @export
 linreg.ancon <- function(x, y, data, covars) {
@@ -29,8 +34,13 @@ linreg.ancon <- function(x, y, data, covars) {
 #' contains the rownames and the subsequent columns are the sample identifiers.
 #' Any rows with duplicated row names will be dropped with the first one being
 #' kepted.
-#'
-#' @param infile Path to the input file
+#' 
+#' @importFrom stats as.formula glm binomial
+#' 
+#' @param x Path to the input file
+#' @param y Path to the input file
+#' @param data Path to the input file
+#' @param covars Path to the input file
 #' @return A matrix of the infile
 #' @export
 logreg.ancon <- function(x, y, data, covars) {
@@ -51,8 +61,13 @@ logreg.ancon <- function(x, y, data, covars) {
 #' contains the rownames and the subsequent columns are the sample identifiers.
 #' Any rows with duplicated row names will be dropped with the first one being
 #' kepted.
-#'
-#' @param infile Path to the input file
+#' 
+#' @param data Path to the input file
+#' @param x Path to the input file
+#' @param y Path to the input file
+#' @param reg_type Path to the input file
+#' @param covars Path to the input file
+#' @param num_cores Path to the input file
 #' @return A matrix of the infile
 #' @export
 parallel.reg <- function(data, x, y, reg_type = c("lm"), covars, num_cores) {
