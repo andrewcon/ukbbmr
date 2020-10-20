@@ -7,7 +7,13 @@
 shapiro.dt(x, t = c(NA), s = 5000, iter = 100)
 }
 \arguments{
-\item{infile}{Path to the input file}
+\item{x}{Path to the input file}
+
+\item{t}{Path to the input file}
+
+\item{s}{Path to the input file}
+
+\item{iter}{Path to the input file}
 }
 \value{
 A matrix of the infile

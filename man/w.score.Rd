@@ -7,7 +7,13 @@
 w.score(data, org_beta, org_cols = c(), org_trait = NA)
 }
 \arguments{
-\item{infile}{Path to the input file}
+\item{data}{Path to the input file}
+
+\item{org_beta}{Path to the input file}
+
+\item{org_cols}{Path to the input file}
+
+\item{org_trait}{Path to the input file}
 }
 \value{
 A matrix of the infile

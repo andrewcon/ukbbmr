@@ -7,7 +7,13 @@
 sd.cutoff(data, column, sd_const = 2, remove = TRUE)
 }
 \arguments{
-\item{infile}{Path to the input file}
+\item{data}{Path to the input file}
+
+\item{column}{Path to the input file}
+
+\item{sd_const}{Path to the input file}
+
+\item{remove}{Path to the input file}
 }
 \value{
 A matrix of the infile

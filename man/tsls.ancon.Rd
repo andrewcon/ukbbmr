@@ -7,7 +7,17 @@
 tsls.ancon(x, y, data, covars, u_cols = c(), w_cols = c())
 }
 \arguments{
-\item{infile}{Path to the input file}
+\item{x}{Path to the input file}
+
+\item{y}{Path to the input file}
+
+\item{data}{Path to the input file}
+
+\item{covars}{Path to the input file}
+
+\item{u_cols}{Path to the input file}
+
+\item{w_cols}{Path to the input file}
 }
 \value{
 A matrix of the infile

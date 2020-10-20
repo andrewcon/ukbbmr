@@ -7,7 +7,13 @@
 last.nm(data, datafield, datafield_name, cols.rm = TRUE)
 }
 \arguments{
-\item{infile}{Path to the input file}
+\item{data}{Path to the input file}
+
+\item{datafield}{Path to the input file}
+
+\item{datafield_name}{Path to the input file}
+
+\item{cols.rm}{Path to the input file}
 }
 \value{
 A matrix of the infile

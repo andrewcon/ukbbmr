@@ -7,7 +7,17 @@
 parallel.reg(data, x, y, reg_type = c("lm"), covars, num_cores)
 }
 \arguments{
-\item{infile}{Path to the input file}
+\item{data}{Path to the input file}
+
+\item{x}{Path to the input file}
+
+\item{y}{Path to the input file}
+
+\item{reg_type}{Path to the input file}
+
+\item{covars}{Path to the input file}
+
+\item{num_cores}{Path to the input file}
 }
 \value{
 A matrix of the infile

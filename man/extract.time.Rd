@@ -13,7 +13,15 @@ extract.time(
 )
 }
 \arguments{
-\item{infile}{Path to the input file}
+\item{data}{Path to the input file}
+
+\item{datafield}{Path to the input file}
+
+\item{datafield_name}{Path to the input file}
+
+\item{keep.time}{Path to the input file}
+
+\item{keep.date}{Path to the input file}
 }
 \value{
 A matrix of the infile

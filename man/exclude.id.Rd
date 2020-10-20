@@ -14,7 +14,17 @@ exclude.id(
 )
 }
 \arguments{
-\item{infile}{Path to the input file}
+\item{data}{Path to the input file}
+
+\item{datafield}{Path to the input file}
+
+\item{datafield_name}{Path to the input file}
+
+\item{my_exclusions}{Path to the input file}
+
+\item{my_cols}{Path to the input file}
+
+\item{exclude}{Path to the input file}
 }
 \value{
 A matrix of the infile
